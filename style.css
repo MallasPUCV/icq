@@ -266,11 +266,11 @@ h1 {
         padding: 10px 12px 20px 12px;
     }
 
-    /* SEMESTRES */
+    /* SEMESTRES (🔑 CLAVE AQUÍ) */
     .semester {
         width: 100%;
         max-width: 420px;
-        margin: 0 auto;
+        margin: 0 auto;          /* 🔥 ESTO LOS CENTRA */
         box-sizing: border-box;
     }
 
@@ -285,20 +285,19 @@ h1 {
         hyphens: auto;
     }
 
-    /* FLECHA DE PRERREQUISITOS */
-    .prereq-button {
-        font-size: 14px;
+/* SWITCH PRACTICA (IGNORAR, NO TOCADO) */
+    #practice-switch-container {
+        position: relative;
+        top: auto;
+        right: auto;
+
+        margin: 12px auto 0 auto;
+        display: flex;
+        justify-content: center;
+
+        transform: scale(0.9);
     }
 
-    /* PRERREQUISITOS */
-    .prereq-container {
-        text-align: left;
-    }
-
-    .prereq-item {
-        font-size: 12px;
-        line-height: 1.35;
-    }
 }
 
 
