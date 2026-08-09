@@ -270,195 +270,134 @@ document.addEventListener("DOMContentLoaded", () => {
                     div.classList.add("locked");
                 }
 
-                // =================================================
-                // ===== BOTÓN PRERREQUISITOS =====================
-                // =================================================
+               // =================================================
+// ===== BOTÓN PRERREQUISITOS =====================
+// =================================================
 
-                const prereqButton =
-                    document.createElement("button");
+const prereqs = course.prereq || [];
 
-                prereqButton.className =
-                    "prereq-button";
+// Solo crear flecha si tiene prerrequisitos
+if (prereqs.length > 0) {
 
-                prereqButton.type =
-                    "button";
+    const prereqButton =
+        document.createElement("button");
+
+    prereqButton.className =
+        "prereq-button";
+
+    prereqButton.type =
+        "button";
+
+    prereqButton.textContent =
+        "▼";
+
+    // Evita que al tocar la flecha
+    // se marque/desmarque el ramo
+    prereqButton.addEventListener(
+        "click",
+        (event) => {
+
+            event.stopPropagation();
+
+            const existing =
+                div.querySelector(
+                    ".prereq-container"
+                );
+
+            if (existing) {
+
+                existing.remove();
 
                 prereqButton.textContent =
                     "▼";
 
-                // Evita que al tocar la flecha
-                // se marque/desmarque el ramo
-                prereqButton.addEventListener(
-                    "click",
-                    (event) => {
+                return;
+            }
 
-                        event.stopPropagation();
+            // ================================
+            // CREAR PANEL
+            // ================================
 
-                        const existing =
-                            div.querySelector(
-                                ".prereq-container"
-                            );
+            const prereqContainer =
+                document.createElement("div");
 
-                        if (existing) {
+            prereqContainer.className =
+                "prereq-container";
 
-                            existing.remove();
+            const prereqTitle =
+                document.createElement("div");
 
-                            prereqButton.textContent =
-                                "▼";
+            prereqTitle.className =
+                "prereq-title";
 
-                            return;
-                        }
+            prereqTitle.textContent =
+                "Prerrequisitos:";
 
-                        // ================================
-                        // CREAR PANEL
-                        // ================================
+            prereqContainer.appendChild(
+                prereqTitle
+            );
 
-                        const prereqContainer =
-                            document.createElement("div");
+            // ================================
+            // MOSTRAR PRERREQUISITOS
+            // ================================
 
-                        prereqContainer.className =
-                            "prereq-container";
+            prereqs.forEach(req => {
 
-                        const prereqTitle =
-                            document.createElement("div");
+                const item =
+                    document.createElement("div");
 
-                        prereqTitle.className =
-                            "prereq-title";
-
-                        prereqTitle.textContent =
-                            "Prerrequisitos:";
-
-                        prereqContainer.appendChild(
-                            prereqTitle
-                        );
-
-                        const prereqs =
-                            course.prereq || [];
-
-                        // ================================
-                        // SIN PRERREQUISITOS
-                        // ================================
-
-                        if (prereqs.length === 0) {
-
-                            const noPrereq =
-                                document.createElement("div");
-
-                            noPrereq.className =
-                                "prereq-item prereq-approved";
-
-                            noPrereq.textContent =
-                                "Sin prerrequisitos";
-
-                            prereqContainer.appendChild(
-                                noPrereq
-                            );
-
-                        } else {
-
-                            // ============================
-                            // MOSTRAR PRERREQUISITOS
-                            // ============================
-
-                            prereqs.forEach(req => {
-
-                                const item =
-                                    document.createElement(
-                                        "div"
-                                    );
-
-                                item.classList.add(
-                                    "prereq-item"
-                                );
-
-                                const reqCourse =
-                                    courseMap[req];
-
-                                const isApproved =
-                                    approved.includes(req);
-
-                                if (isApproved) {
-
-                                    item.classList.add(
-                                        "prereq-approved"
-                                    );
-
-                                } else {
-
-                                    item.classList.add(
-                                        "prereq-not-approved"
-                                    );
-                                }
-
-                                if (reqCourse) {
-
-                                    item.textContent =
-                                        `${req} - ${reqCourse.name}`;
-
-                                } else {
-
-                                    item.textContent =
-                                        req;
-                                }
-
-                                prereqContainer.appendChild(
-                                    item
-                                );
-                            });
-                        }
-
-                        // =================================================
-                        // ===== CRÉDITOS MÍNIMOS ===========================
-                        // =================================================
-
-                        if (course.minCredits) {
-
-                            const creditsItem =
-                                document.createElement("div");
-
-                            creditsItem.classList.add(
-                                "prereq-item"
-                            );
-
-                            const currentCredits =
-                                calculateApprovedCredits();
-
-                            if (
-                                currentCredits >=
-                                course.minCredits
-                            ) {
-
-                                creditsItem.classList.add(
-                                    "prereq-approved"
-                                );
-
-                            } else {
-
-                                creditsItem.classList.add(
-                                    "prereq-not-approved"
-                                );
-                            }
-
-                            creditsItem.textContent =
-                                `Mínimo ${course.minCredits} créditos aprobados`;
-
-                            prereqContainer.appendChild(
-                                creditsItem
-                            );
-                        }
-
-                        div.appendChild(
-                            prereqContainer
-                        );
-
-                        prereqButton.textContent =
-                            "▲";
-                    }
+                item.classList.add(
+                    "prereq-item"
                 );
 
-                div.appendChild(
-                    prereqButton
+                const reqCourse =
+                    courseMap[req];
+
+                const isApproved =
+                    approved.includes(req);
+
+                if (isApproved) {
+
+                    item.classList.add(
+                        "prereq-approved"
+                    );
+
+                } else {
+
+                    item.classList.add(
+                        "prereq-not-approved"
+                    );
+                }
+
+                if (reqCourse) {
+
+                    item.textContent =
+                        `${req} - ${reqCourse.name}`;
+
+                } else {
+
+                    item.textContent =
+                        req;
+                }
+
+                prereqContainer.appendChild(
+                    item
                 );
+            });
+
+            div.appendChild(
+                prereqContainer
+            );
+
+            prereqButton.textContent =
+                "▲";
+        }
+    );
+
+    div.appendChild(
+        prereqButton
+    );
+}
 
                 // =================================================
                 // ===== CLICK PARA APROBAR / DESAPROBAR ==========
